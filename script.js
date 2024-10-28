@@ -3471,11 +3471,18 @@ function takeCommand(message) {
         window.open("calculator://"); 
         return;
     }
-    else if (message.includes("open camera")) {
-        speak("Opening camera..");
-        window.open("camera://"); 
-        return;
-    } 
+   else if (message.includes("open camera")) {
+    speak("Opening camera...");
+    navigator.mediaDevices.getUserMedia({ video: true })
+        .then(stream => {
+            let video = document.createElement("video");
+            video.srcObject = stream;
+            video.autoplay = true;
+            document.body.appendChild(video);
+        })
+        .catch(error => speak("Camera access denied."));
+    return;
+}
     else if (message.includes("open calendar")) {
         speak("Opening calendar..");
         window.open("calendar://"); 
